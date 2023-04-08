@@ -26,4 +26,3 @@ class CreatePersonalDetailsTable extends Migration
         Schema::dropIfExists('personal_details');
     }
 }
-

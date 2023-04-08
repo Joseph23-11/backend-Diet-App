@@ -19,9 +19,8 @@ return new class extends Migration
             $table->enum('level_aktivitas', [0, 1, 2, 3]);
             $table->float('target_berat_badan');
             $table->enum('target_diet', ['lambat', 'normal', 'cepat']);
-            $table->integer('target_waktu_diet');
-            $table->float('kebutuhan_kalori_harian');
-            $table->float('target_kalori_harian');
+            $table->integer('target_hari_diet');
+            $table->float('budget_kalori_harian');
             $table->float('total_pengurangan_berat');
             $table->timestamps();
 

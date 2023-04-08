@@ -26,42 +26,40 @@ class TargetController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-{
-    $validator = Validator::make($request->all(), [
-        'level_aktivitas' => 'required|in:0,1,2,3',
-        'target_berat_badan' => 'required|numeric',
-        'target_diet' => 'required|in:lambat,normal,cepat',
-        'target_waktu_diet' => 'required|integer',
-        'kebutuhan_kalori_harian' => 'required|numeric',
-        'target_kalori_harian' => 'required|numeric',
-        'total_pengurangan_berat' => 'required|numeric',
-    ]);
+    {
+        $validator = Validator::make($request->all(), [
+            'level_aktivitas' => 'required|in:0,1,2,3',
+            'target_berat_badan' => 'required|numeric',
+            'target_diet' => 'required|in:lambat,normal,cepat',
+            'target_hari_diet' => 'required|integer',
+            'budget_kalori_harian' => 'required|numeric',
+            'total_pengurangan_berat' => 'required|numeric',
+        ]);
 
-    if ($validator->fails()) {
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation errors',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $target = Target::create([
+            'user_id' => Auth::id(),
+            'level_aktivitas' => $request->input('level_aktivitas'),
+            'target_berat_badan' => $request->input('target_berat_badan'),
+            'target_diet' => $request->input('target_diet'),
+            'target_hari_diet' => $request->input('target_hari_diet'),
+            'budget_kalori_harian' => $request->input('budget_kalori_harian'),
+            'total_pengurangan_berat' => $request->input('total_pengurangan_berat'),
+        ]);
+
         return response()->json([
-            'success' => false,
-            'message' => 'Validation errors',
-            'errors' => $validator->errors(),
-        ], 422);
+            'success' => true,
+            'message' => 'Target created successfully',
+            'data' => $target,
+        ], 201);
     }
-
-    $target = Target::create([
-        'user_id' => Auth::id(),
-        'level_aktivitas' => $request->input('level_aktivitas'),
-        'target_berat_badan' => $request->input('target_berat_badan'),
-        'target_diet' => $request->input('target_diet'),
-        'target_waktu_diet' => $request->input('target_waktu_diet'),
-        'kebutuhan_kalori_harian' => $request->input('kebutuhan_kalori_harian'),
-        'target_kalori_harian' => $request->input('target_kalori_harian'),
-        'total_pengurangan_berat' => $request->input('total_pengurangan_berat'),
-    ]);
-
-    return response()->json([
-        'success' => true,
-        'message' => 'Target created successfully',
-        'data' => $target,
-    ], 201);
-}
 
 
     /**
