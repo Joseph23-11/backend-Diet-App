@@ -15,9 +15,8 @@ class Target extends Model
         'level_aktivitas',
         'target_berat_badan',
         'target_diet',
-        'target_waktu_diet',
-        'kebutuhan_kalori_harian',
-        'target_kalori_harian',
+        'target_hari_diet',
+        'budget_kalori_harian',
         'total_pengurangan_berat',
     ];
 
@@ -25,7 +24,7 @@ class Target extends Model
     {
         return $this->belongsTo(User::class);
     }
-    
+
     protected $casts = [
         'target_diet' => 'string',
     ];
