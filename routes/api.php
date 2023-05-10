@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FoodController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TargetController;
 use App\Http\Controllers\Auth\AuthController;
@@ -33,4 +34,5 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::get('/personal-details', [PersonalDetailController::class, 'show']);
     Route::put('/personal-details', [PersonalDetailController::class, 'update']);
     Route::post('/target', [TargetController::class, 'store']);
+    Route::get('/food', [FoodController::class, 'index']);
 });

@@ -18,9 +18,10 @@ return new class extends Migration
             $table->string('nama_makanan');
             $table->float('berat_makanan');
             $table->float('kalori');
-            $table->float('karbohidrat');
             $table->float('protein');
             $table->float('lemak');
+            $table->float('karbohidrat');
+            $table->string('ukuran');
             $table->timestamps();
         });
     }

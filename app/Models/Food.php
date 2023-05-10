@@ -13,8 +13,9 @@ class Food extends Model
         'nama_makanan',
         'berat_makanan',
         'kalori',
-        'karbohidrat',
         'protein',
         'lemak',
+        'karbohidrat',
+        'ukuran'
     ];
 }
