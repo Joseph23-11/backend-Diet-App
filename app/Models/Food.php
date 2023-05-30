@@ -2,8 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Lunch;
+use App\Models\Snack;
+use App\Models\Dinner;
+use App\Models\Breakfast;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Food extends Model
 {
@@ -18,4 +22,24 @@ class Food extends Model
         'karbohidrat',
         'ukuran'
     ];
+
+    public function breakfasts()
+    {
+        return $this->hasMany(Breakfast::class);
+    }
+
+    public function lunches()
+    {
+        return $this->hasMany(Lunch::class);
+    }
+
+    public function dinners()
+    {
+        return $this->hasMany(Dinner::class);
+    }
+
+    public function snacks()
+    {
+        return $this->hasMany(Snack::class);
+    }
 }

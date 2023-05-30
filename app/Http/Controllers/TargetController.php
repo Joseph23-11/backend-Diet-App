@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Target;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -68,9 +69,30 @@ class TargetController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
-        //
+        $user = User::find(Auth::id());
+
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User not found',
+            ], 404);
+        }
+
+        $target = $user->target;
+
+        if (!$target) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Target not found',
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $target,
+        ]);
     }
 
     /**
