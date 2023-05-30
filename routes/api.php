@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FoodController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\SportController;
 use App\Http\Controllers\TargetController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\PersonalDetailController;
@@ -33,6 +34,8 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('/personal-details', [PersonalDetailController::class, 'store']);
     Route::get('/personal-details', [PersonalDetailController::class, 'show']);
     Route::put('/personal-details', [PersonalDetailController::class, 'update']);
+    Route::get('/target', [TargetController::class, 'show']);
     Route::post('/target', [TargetController::class, 'store']);
     Route::get('/food', [FoodController::class, 'index']);
+    Route::get('/sports', [SportController::class, 'index']);
 });
