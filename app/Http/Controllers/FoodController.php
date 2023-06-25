@@ -15,13 +15,13 @@ class FoodController extends Controller
     public function index()
     {
         $foods = Food::all();
-
+    
         return response()->json([
             'success' => true,
             'data' => $foods,
         ]);
     }
-
+    
 
     /**
      * Store a newly created resource in storage.

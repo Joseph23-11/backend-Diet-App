@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\DailySport;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Sport extends Model
 {
@@ -14,4 +15,9 @@ class Sport extends Model
         'berat',
         'kalori',
     ];
+
+    public function dailySport()
+    {
+        return $this->hasMany(DailySport::class);
+    }
 }

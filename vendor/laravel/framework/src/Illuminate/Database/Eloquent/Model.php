@@ -30,7 +30,6 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
         Concerns\HasGlobalScopes,
         Concerns\HasRelationships,
         Concerns\HasTimestamps,
-        Concerns\HasUniqueIds,
         Concerns\HidesAttributes,
         Concerns\GuardsAttributes,
         ForwardsCalls;
@@ -468,7 +467,7 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
     }
 
     /**
-     * Register a callback that is responsible for handling missing attribute violations.
+     * Register a callback that is responsible for handling lazy loading violations.
      *
      * @param  callable|null  $callback
      * @return void
@@ -1285,10 +1284,6 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
         // convenience. After, we will just continue saving these model instances.
         if ($this->usesTimestamps()) {
             $this->updateTimestamps();
-        }
-
-        if ($this->usesUniqueIds()) {
-            $this->setUniqueIds();
         }
 
         // If the model has an incrementing key, we can use the "insertGetId" method on
@@ -2323,7 +2318,7 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
             return $this->$method(...$parameters);
         }
 
-        if ($resolver = $this->relationResolver(static::class, $method)) {
+        if ($resolver = ($this->relationResolver(static::class, $method))) {
             return $resolver($this);
         }
 

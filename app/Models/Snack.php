@@ -30,4 +30,9 @@ class Snack extends Model
     {
         return $this->belongsTo(Food::class);
     }
+
+    protected function serializeDate($date)
+    {
+        return $date->setTimezone('Asia/Jakarta')->format($this->getDateFormat());
+    }
 }

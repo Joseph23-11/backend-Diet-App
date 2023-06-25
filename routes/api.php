@@ -4,9 +4,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FoodController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\LunchController;
+use App\Http\Controllers\SnackController;
 use App\Http\Controllers\SportController;
+use App\Http\Controllers\DinnerController;
 use App\Http\Controllers\TargetController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\BreakfastController;
+use App\Http\Controllers\DailyDietController;
+use App\Http\Controllers\DailySportController;
 use App\Http\Controllers\PersonalDetailController;
 
 /*
@@ -38,4 +44,20 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('/target', [TargetController::class, 'store']);
     Route::get('/food', [FoodController::class, 'index']);
     Route::get('/sports', [SportController::class, 'index']);
+    Route::get('/breakfasts', [BreakfastController::class, 'index']);
+    Route::post('/breakfasts', [BreakfastController::class, 'store']);
+    Route::delete('breakfasts/{id}', [BreakfastController::class, 'destroy']);
+    Route::get('/lunches', [LunchController::class, 'index']);
+    Route::post('/lunches', [LunchController::class, 'store']);
+    Route::delete('lunches/{id}', [LunchController::class, 'destroy']);
+    Route::get('/dinners', [DinnerController::class, 'index']);
+    Route::post('/dinners', [DinnerController::class, 'store']);
+    Route::delete('dinners/{id}', [DinnerController::class, 'destroy']);
+    Route::get('/snacks', [SnackController::class, 'index']);
+    Route::post('/snacks', [SnackController::class, 'store']);
+    Route::delete('snacks/{id}', [SnackController::class, 'destroy']);
+    Route::get('/daily-sports', [DailySportController::class, 'index']);
+    Route::post('/daily-sports', [DailySportController::class, 'store']);
+    Route::delete('daily-sports/{id}', [DailySportController::class, 'destroy']);
+    Route::get('/daily-diets', [DailyDietController::class, 'index']);
 });

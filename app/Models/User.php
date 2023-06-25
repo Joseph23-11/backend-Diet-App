@@ -2,7 +2,12 @@
 
 namespace App\Models;
 
+use App\Models\Lunch;
+use App\Models\Snack;
+use App\Models\Dinner;
 use App\Models\Target;
+use App\Models\Breakfast;
+use App\Models\DailySport;
 use App\Models\PersonalDetail;
 use Laravel\Sanctum\HasApiTokens;
 use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -72,6 +77,31 @@ class User extends Authenticatable implements JWTSubject
     public function target()
     {
         return $this->hasOne(Target::class);
+    }
+
+    public function breakfasts()
+    {
+        return $this->hasMany(Breakfast::class);
+    }
+
+    public function lunches()
+    {
+        return $this->hasMany(Lunch::class);
+    }
+
+    public function dinners()
+    {
+        return $this->hasMany(Dinner::class);
+    }
+
+    public function snacks()
+    {
+        return $this->hasMany(Snack::class);
+    }
+
+    public function dailySport()
+    {
+        return $this->hasMany(DailySport::class);
     }
 }
 
