@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitbe338d7422e18dd6cfddabb99ed430fb
+class ComposerStaticInit1f20d9fdbf4c125d8f6cb5b9a2625ab0
 {
     public static $files = array (
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
@@ -353,8 +353,8 @@ class ComposerStaticInitbe338d7422e18dd6cfddabb99ed430fb
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-factory/src',
-            1 => __DIR__ . '/..' . '/psr/http-message/src',
+            0 => __DIR__ . '/..' . '/psr/http-message/src',
+            1 => __DIR__ . '/..' . '/psr/http-factory/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -545,6 +545,8 @@ class ComposerStaticInitbe338d7422e18dd6cfddabb99ed430fb
         'App\\Http\\Controllers\\FoodController' => __DIR__ . '/../..' . '/app/Http/Controllers/FoodController.php',
         'App\\Http\\Controllers\\LunchController' => __DIR__ . '/../..' . '/app/Http/Controllers/LunchController.php',
         'App\\Http\\Controllers\\PersonalDetailController' => __DIR__ . '/../..' . '/app/Http/Controllers/PersonalDetailController.php',
+        'App\\Http\\Controllers\\PerubahanBeratController' => __DIR__ . '/../..' . '/app/Http/Controllers/PerubahanBeratController.php',
+        'App\\Http\\Controllers\\PrediksiController' => __DIR__ . '/../..' . '/app/Http/Controllers/PrediksiController.php',
         'App\\Http\\Controllers\\SnackController' => __DIR__ . '/../..' . '/app/Http/Controllers/SnackController.php',
         'App\\Http\\Controllers\\SportController' => __DIR__ . '/../..' . '/app/Http/Controllers/SportController.php',
         'App\\Http\\Controllers\\TargetController' => __DIR__ . '/../..' . '/app/Http/Controllers/TargetController.php',
@@ -565,6 +567,7 @@ class ComposerStaticInitbe338d7422e18dd6cfddabb99ed430fb
         'App\\Models\\Food' => __DIR__ . '/../..' . '/app/Models/Food.php',
         'App\\Models\\Lunch' => __DIR__ . '/../..' . '/app/Models/Lunch.php',
         'App\\Models\\PersonalDetail' => __DIR__ . '/../..' . '/app/Models/PersonalDetail.php',
+        'App\\Models\\PerubahanBerat' => __DIR__ . '/../..' . '/app/Models/PerubahanBerat.php',
         'App\\Models\\Snack' => __DIR__ . '/../..' . '/app/Models/Snack.php',
         'App\\Models\\Sport' => __DIR__ . '/../..' . '/app/Models/Sport.php',
         'App\\Models\\Target' => __DIR__ . '/../..' . '/app/Models/Target.php',
@@ -5933,10 +5936,10 @@ class ComposerStaticInitbe338d7422e18dd6cfddabb99ed430fb
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitbe338d7422e18dd6cfddabb99ed430fb::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitbe338d7422e18dd6cfddabb99ed430fb::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInitbe338d7422e18dd6cfddabb99ed430fb::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInitbe338d7422e18dd6cfddabb99ed430fb::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit1f20d9fdbf4c125d8f6cb5b9a2625ab0::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit1f20d9fdbf4c125d8f6cb5b9a2625ab0::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit1f20d9fdbf4c125d8f6cb5b9a2625ab0::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit1f20d9fdbf4c125d8f6cb5b9a2625ab0::$classMap;
 
         }, null, ClassLoader::class);
     }

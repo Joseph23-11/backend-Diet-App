@@ -9,11 +9,13 @@ use App\Http\Controllers\SnackController;
 use App\Http\Controllers\SportController;
 use App\Http\Controllers\DinnerController;
 use App\Http\Controllers\TargetController;
+use App\Http\Controllers\PrediksiController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\BreakfastController;
 use App\Http\Controllers\DailyDietController;
 use App\Http\Controllers\DailySportController;
 use App\Http\Controllers\PersonalDetailController;
+use App\Http\Controllers\PerubahanBeratController;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,4 +62,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('/daily-sports', [DailySportController::class, 'store']);
     Route::delete('daily-sports/{id}', [DailySportController::class, 'destroy']);
     Route::get('/daily-diets', [DailyDietController::class, 'index']);
+    Route::get('/perubahan-berat', [PerubahanBeratController::class, 'index']);
+    Route::post('/perubahan-berat', [PerubahanBeratController::class, 'store']);
+    Route::get('/prediksi', [PrediksiController::class, 'index']);
 });
