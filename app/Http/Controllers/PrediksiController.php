@@ -19,10 +19,11 @@ class PrediksiController extends Controller
         // Mengambil data perubahan berat badan berdasarkan personal_detail_id
         $perubahanBerats = PerubahanBerat::where('personal_detail_id', $personalDetailId)->get();
 
-        // Memeriksa apakah data perubahan berat badan kosong
-        if ($perubahanBerats->isEmpty()) {
-            return response()->json(['error' => 'No weight change data found.'], 404);
+        // Memeriksa apakah data perubahan berat badan kosong atau hanya terdiri dari satu elemen
+        if ($perubahanBerats->isEmpty() || $perubahanBerats->count() < 2) {
+            return response()->json(['error' => 'Insufficient weight change data. At least 2 data points are required.'], 404);
         }
+
 
         // Membuat matriks X dan vektor y dari data perubahan berat badan
         $X = [];
@@ -36,21 +37,13 @@ class PrediksiController extends Controller
         $count = count($y);
 
         // Menghitung matriks X_transpose
-        $X_transpose = $X;
-        if (!is_array($X_transpose[0])) {
-            $X_transpose = [$X_transpose];
-        } else {
-            $X_transpose = array_map(null, ...$X_transpose);
-        }
-
+        $X_transpose = array_map(null, ...$X);
 
         // Menghitung matriks X_transpose_X
         $X_transpose_X = [];
-        $X_transpose = is_array($X_transpose) ? $X_transpose : [$X_transpose];
-        $countXTranspose = count($X_transpose);
-        for ($i = 0; $i < $countXTranspose; $i++) {
+        for ($i = 0; $i < count($X_transpose); $i++) {
             $row = [];
-            for ($j = 0; $j < $countXTranspose; $j++) {
+            for ($j = 0; $j < count($X_transpose); $j++) {
                 $sum = 0;
                 for ($k = 0; $k < $count; $k++) {
                     $sum += $X[$k][$i] * $X[$k][$j];
@@ -82,34 +75,18 @@ class PrediksiController extends Controller
     {
         $result = [];
         $m = count($matrix);
-
-        if (is_array($matrix[0])) {
-            $n = count($matrix[0]);
-        } else {
-            $n = count($matrix);
-        }
-
-        // Debugging statements
-        echo 'Matrix Dimensions: ' . $m . ' x ' . $n . "\n";
-        echo 'Vector Dimensions: ' . count($vector) . "\n";
-
+        $n = count($matrix[0]);
 
         for ($i = 0; $i < $m; $i++) {
             $sum = 0;
             for ($j = 0; $j < $n; $j++) {
-                if (is_array($vector)) {
-                    $sum += $matrix[$i][$j] * $vector[$j];
-                } else {
-                    $sum += $matrix[$i][$j] * $vector;
-                }
+                $sum += $matrix[$i][$j] * $vector[$j];
             }
             $result[] = $sum;
         }
 
         return $result;
     }
-
-
 
     // Fungsi untuk menghitung invers matriks menggunakan metode adjoin
     function inverseMatrix($matrix)
