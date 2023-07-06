@@ -21,12 +21,21 @@ class DailySportController extends Controller
     {
         // Mendapatkan ID pengguna yang sedang login
         $user_id = Auth::id();
-    
-        // Mendapatkan data breakfast berdasarkan user_id dan created_at hari ini
+
+        // Mendapatkan data daily sport berdasarkan user_id dan created_at hari ini
         $dailySports = DailySport::where('user_id', $user_id)
             ->whereDate('created_at', today())
             ->get();
-    
+
+        // Loop melalui setiap objek daily sport
+        foreach ($dailySports as $dailySport) {
+            // Mendapatkan data olahraga berdasarkan sport_id
+            $sport = Sport::findOrFail($dailySport->sport_id);
+            
+            // Menambahkan nama olahraga ke objek daily sport
+            $dailySport->nama_olahraga = $sport->nama_olahraga;
+        }
+
         return response()->json([
             'success' => true,
             'message' => 'Daily Sport data retrieved successfully',
@@ -46,7 +55,7 @@ class DailySportController extends Controller
             'sport_id' => 'required',
             'durasi' => 'required',
         ]);
-    
+
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
@@ -54,30 +63,28 @@ class DailySportController extends Controller
                 'errors' => $validator->errors(),
             ], 422);
         }
-    
+
         // Mendapatkan user yang sedang login
         $user_id = Auth::id();
 
-        // Mendapatkan data makanan berdasarkan food_id
+        // Mendapatkan data olahraga berdasarkan sport_id
         $sport = Sport::findOrFail($request->input('sport_id'));
-    
+
         $durasi = $request->input('durasi');
         list($jam, $menit, $detik) = explode(':', $durasi);
-    
+
         $jam = (int)$jam;
         $menit = (int)$menit;
         $detik = (int)$detik;
-    
+
         $totalDetik = ($jam * 3600) + ($menit * 60) + $detik;
         $jamDecimal = $totalDetik / 3600;
-    
+
         $kalori = $jamDecimal * $sport->kalori;
-    
+
         // Pembulatan hasil kalori menjadi dua desimal
         $kalori = round($kalori, 2);
 
-        // dd($sport);
-    
         // Menyimpan data dailySport baru
         $dailySport = DailySport::create([
             'user_id' => $user_id,
@@ -85,7 +92,10 @@ class DailySportController extends Controller
             'durasi' => $durasi,
             'kalori' => $kalori,
         ]);
-    
+
+        // Mendapatkan nama olahraga terkait
+        $dailySport->nama_olahraga = $sport->nama_olahraga;
+
         return response()->json([
             'success' => true,
             'message' => 'Daily Sport data created successfully',

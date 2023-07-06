@@ -20,6 +20,15 @@ class DinnerController extends Controller
             ->whereDate('created_at', today())
             ->get();
 
+        // Loop melalui setiap objek dinner
+        foreach ($dinners as $dinner) {
+            // Mendapatkan data makanan berdasarkan food_id
+            $food = Food::findOrFail($dinner->food_id);
+            
+            // Menambahkan nama makanan ke objek dinner
+            $dinner->nama_makanan = $food->nama_makanan;
+        }
+
         return response()->json([
             'success' => true,
             'message' => 'Dinner data retrieved successfully',
@@ -65,6 +74,9 @@ class DinnerController extends Controller
             'lemak' => $lemak,
             'karbohidrat' => $karbohidrat,
         ]);
+
+        // Mendapatkan nama makanan terkait
+        $dinner->nama_makanan = $food->nama_makanan;
 
         return response()->json([
             'success' => true,

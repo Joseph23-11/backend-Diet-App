@@ -25,6 +25,15 @@ class SnackController extends Controller
             ->whereDate('created_at', today())
             ->get();
 
+        // Loop melalui setiap objek snack
+        foreach ($snacks as $snack) {
+            // Mendapatkan data makanan berdasarkan food_id
+            $food = Food::findOrFail($snack->food_id);
+            
+            // Menambahkan nama makanan ke objek snack
+            $snack->nama_makanan = $food->nama_makanan;
+        }
+
         return response()->json([
             'success' => true,
             'message' => 'Snack data retrieved successfully',
@@ -32,12 +41,6 @@ class SnackController extends Controller
         ], 200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -76,6 +79,9 @@ class SnackController extends Controller
             'lemak' => $lemak,
             'karbohidrat' => $karbohidrat,
         ]);
+
+        // Mendapatkan nama makanan terkait
+        $snack->nama_makanan = $food->nama_makanan;
 
         return response()->json([
             'success' => true,
