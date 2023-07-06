@@ -62,6 +62,8 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('/daily-sports', [DailySportController::class, 'store']);
     Route::delete('daily-sports/{id}', [DailySportController::class, 'destroy']);
     Route::get('/daily-diets', [DailyDietController::class, 'index']);
+    Route::get('/status', [DailyDietController::class, 'status']);
+    Route::post('/daily-diets/search', [DailyDietController::class, 'searchByDate']);
     Route::get('/perubahan-berat', [PerubahanBeratController::class, 'index']);
     Route::post('/perubahan-berat', [PerubahanBeratController::class, 'store']);
     Route::delete('/perubahan-berat/{id}', [PerubahanBeratController::class, 'destroy']);

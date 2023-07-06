@@ -24,6 +24,15 @@ class BreakfastController extends Controller
         $breakfasts = Breakfast::where('user_id', $user_id)
             ->whereDate('created_at', today())
             ->get();
+
+        // Loop melalui setiap objek breakfast
+        foreach ($breakfasts as $breakfast) {
+            // Mendapatkan data makanan berdasarkan food_id
+            $food = Food::findOrFail($breakfast->food_id);
+            
+            // Menambahkan nama makanan ke objek breakfast
+            $breakfast->nama_makanan = $food->nama_makanan;
+        }
     
         return response()->json([
             'success' => true,
@@ -31,7 +40,7 @@ class BreakfastController extends Controller
             'data' => $breakfasts,
         ], 200);
     }
-
+    
     /**
      * Store a newly created resource in storage.
      *
@@ -77,12 +86,15 @@ class BreakfastController extends Controller
             'karbohidrat' => $karbohidrat,
         ]);
     
+        // Mendapatkan nama makanan terkait
+        $breakfast->nama_makanan = $food->nama_makanan;
+    
         return response()->json([
             'success' => true,
             'message' => 'Breakfast data created successfully',
             'data' => $breakfast,
         ], 201);
-    }
+    }    
 
     /**
      * Display the specified resource.

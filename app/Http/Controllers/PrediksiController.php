@@ -23,15 +23,17 @@ class PrediksiController extends Controller
         if ($perubahanBerats->isEmpty() || $perubahanBerats->count() < 2) {
             return response()->json(['error' => 'Insufficient weight change data. At least 2 data points are required.'], 404);
         }
+
+
         // Membuat matriks X dan vektor y dari data perubahan berat badan
         $X = [];
         $y = [];
-
+        
         foreach ($perubahanBerats as $index => $perubahanBerat) {
             $X[] = [1, $index + 1];
             $y[] = $perubahanBerat->berat_sekarang; // Ganti "nilai" dengan atribut yang sesuai dalam model PerubahanBerat
         }
-
+        
         $count = count($y);
 
         // Menghitung matriks X_transpose
@@ -65,7 +67,7 @@ class PrediksiController extends Controller
         // Menambahkan prediksi perubahan berat badan ke prediksi berat sekarang
         $prediksiBeratSekarang += $perubahanBerat;
 
-        return response()->json(['prediksi_berat_sekarang' => round($prediksiBeratSekarang, 2)]);
+        return response()->json(['prediksi_berat_sekarang' => $prediksiBeratSekarang]);
     }
 
     // Fungsi untuk mengalikan matriks dengan vektor
@@ -181,8 +183,8 @@ class PrediksiController extends Controller
         }
 
         return $result;
-    }
-
+    } 
+    
 
     /**
      * Store a newly created resource in storage.
