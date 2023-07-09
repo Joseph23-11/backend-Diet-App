@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'laravel/laravel',
-        'pretty_version' => 'dev-master',
-        'version' => 'dev-master',
-        'reference' => '5ef56cb6df29ed84c1030cdd3ee2dbd90a4f4220',
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
+        'reference' => 'b815d31b68bda2b2d6a939c42a02e4da7e73dd1f',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -374,9 +374,9 @@
             'dev_requirement' => false,
         ),
         'laravel/laravel' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
-            'reference' => '5ef56cb6df29ed84c1030cdd3ee2dbd90a4f4220',
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => 'b815d31b68bda2b2d6a939c42a02e4da7e73dd1f',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -1000,6 +1000,15 @@
             'install_path' => __DIR__ . '/../spatie/laravel-ignition',
             'aliases' => array(),
             'dev_requirement' => true,
+        ),
+        'sybio/image-workshop' => array(
+            'pretty_version' => '2.2.2',
+            'version' => '2.2.2.0',
+            'reference' => '4d44147cfbcd753224aa616291b14fb22a00da65',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../sybio/image-workshop',
+            'aliases' => array(),
+            'dev_requirement' => false,
         ),
         'symfony/console' => array(
             'pretty_version' => 'v6.3.0',

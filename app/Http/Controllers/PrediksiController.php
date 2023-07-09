@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\PerubahanBerat;
+use App\Models\Target;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class PrediksiController extends Controller
 {
@@ -24,17 +26,14 @@ class PrediksiController extends Controller
             return response()->json(['error' => 'Insufficient weight change data. At least 2 data points are required.'], 404);
         }
 
-
         // Membuat matriks X dan vektor y dari data perubahan berat badan
         $X = [];
         $y = [];
-        
+
         foreach ($perubahanBerats as $index => $perubahanBerat) {
             $X[] = [1, $index + 1];
-            $y[] = $perubahanBerat->berat_sekarang; // Ganti "nilai" dengan atribut yang sesuai dalam model PerubahanBerat
+            $y[] = $perubahanBerat->berat_sekarang;
         }
-        
-        $count = count($y);
 
         // Menghitung matriks X_transpose
         $X_transpose = array_map(null, ...$X);
@@ -45,7 +44,7 @@ class PrediksiController extends Controller
             $row = [];
             for ($j = 0; $j < count($X_transpose); $j++) {
                 $sum = 0;
-                for ($k = 0; $k < $count; $k++) {
+                for ($k = 0; $k < count($X); $k++) {
                     $sum += $X[$k][$i] * $X[$k][$j];
                 }
                 $row[] = $sum;
@@ -58,16 +57,37 @@ class PrediksiController extends Controller
         $X_transpose_y = $this->matrixVectorMultiplication($X_transpose, $y);
         $c = $this->matrixVectorMultiplication($X_transpose_X_inverse, $X_transpose_y);
 
-        $jumlahData = $count; // Jumlah data yang ingin ditambahkan
-        $prediksiBeratSekarang = $c[0] + $c[1] * ($count + 1);
+        // Mengambil data target berat badan
+        $targetBeratBadan = Target::where('user_id', Auth::id())->pluck('target_berat_badan')->first();
 
-        // Menghitung perubahan berat badan
-        $perubahanBerat = $y[$count - 1] - $y[$count - 2];
+        // Menghitung hari ke berapa titik berat badan ideal terpenuhi (intersep dengan garis regresi linear)
+        $hariKeX = ($targetBeratBadan - $c[0]) / $c[1];
+        $hariKeXRounded = ceil($hariKeX);
 
-        // Menambahkan prediksi perubahan berat badan ke prediksi berat sekarang
-        $prediksiBeratSekarang += $perubahanBerat;
+        // Membuat array titik-titik garis regresi linear
+        $regressionLine = [];
+        $minX = 1;
+        $maxX = $perubahanBerats->count();
 
-        return response()->json(['prediksi_berat_sekarang' => $prediksiBeratSekarang]);
+        foreach ($perubahanBerats as $index => $perubahanBerat) {
+            $x = $index + 1;
+            $y = $c[0] + $c[1] * $x;
+            $yFormatted = number_format($y, 2);
+            $regressionLine[] = [
+                'hari' => $perubahanBerat->created_at->format('Y-m-d'),
+                'berat' => $yFormatted
+            ];
+        }
+
+        // Menghitung prediksi berat sekarang
+        $prediksiBeratSekarang = $c[0] + $c[1] * ($perubahanBerats->count() + 1);
+        $prediksiBeratSekarangFormatted = number_format($prediksiBeratSekarang, 2);
+
+        return response()->json([
+            'prediksi_berat_sekarang' => $prediksiBeratSekarangFormatted,
+            'hari_target' => $hariKeXRounded,
+            'regression_line' => $regressionLine,
+        ]);
     }
 
     // Fungsi untuk mengalikan matriks dengan vektor
@@ -183,8 +203,8 @@ class PrediksiController extends Controller
         }
 
         return $result;
-    } 
-    
+    }
+
 
     /**
      * Store a newly created resource in storage.
