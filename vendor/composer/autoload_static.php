@@ -106,6 +106,7 @@ class ComposerStaticInit1f20d9fdbf4c125d8f6cb5b9a2625ab0
             'Psr\\Clock\\' => 10,
             'PhpParser\\' => 10,
             'PhpOption\\' => 10,
+            'PHPImageWorkshop\\' => 17,
         ),
         'N' => 
         array (
@@ -383,6 +384,10 @@ class ComposerStaticInit1f20d9fdbf4c125d8f6cb5b9a2625ab0
         'PhpOption\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpoption/phpoption/src/PhpOption',
+        ),
+        'PHPImageWorkshop\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/sybio/image-workshop/src',
         ),
         'NunoMaduro\\Collision\\' => 
         array (
@@ -3511,6 +3516,14 @@ class ComposerStaticInit1f20d9fdbf4c125d8f6cb5b9a2625ab0
         'NunoMaduro\\Collision\\Provider' => __DIR__ . '/..' . '/nunomaduro/collision/src/Provider.php',
         'NunoMaduro\\Collision\\SolutionsRepositories\\NullSolutionsRepository' => __DIR__ . '/..' . '/nunomaduro/collision/src/SolutionsRepositories/NullSolutionsRepository.php',
         'NunoMaduro\\Collision\\Writer' => __DIR__ . '/..' . '/nunomaduro/collision/src/Writer.php',
+        'PHPImageWorkshop\\Core\\Exception\\ImageWorkshopLayerException' => __DIR__ . '/..' . '/sybio/image-workshop/src/Core/Exception/ImageWorkshopLayerException.php',
+        'PHPImageWorkshop\\Core\\Exception\\ImageWorkshopLibException' => __DIR__ . '/..' . '/sybio/image-workshop/src/Core/Exception/ImageWorkshopLibException.php',
+        'PHPImageWorkshop\\Core\\ImageWorkshopLayer' => __DIR__ . '/..' . '/sybio/image-workshop/src/Core/ImageWorkshopLayer.php',
+        'PHPImageWorkshop\\Core\\ImageWorkshopLib' => __DIR__ . '/..' . '/sybio/image-workshop/src/Core/ImageWorkshopLib.php',
+        'PHPImageWorkshop\\Exception\\ImageWorkshopBaseException' => __DIR__ . '/..' . '/sybio/image-workshop/src/Exception/ImageWorkshopBaseException.php',
+        'PHPImageWorkshop\\Exception\\ImageWorkshopException' => __DIR__ . '/..' . '/sybio/image-workshop/src/Exception/ImageWorkshopException.php',
+        'PHPImageWorkshop\\Exif\\ExifOrientations' => __DIR__ . '/..' . '/sybio/image-workshop/src/Exif/ExifOrientations.php',
+        'PHPImageWorkshop\\ImageWorkshop' => __DIR__ . '/..' . '/sybio/image-workshop/src/ImageWorkshop.php',
         'PHPUnit\\Exception' => __DIR__ . '/..' . '/phpunit/phpunit/src/Exception.php',
         'PHPUnit\\Framework\\ActualValueIsNotAnObjectException' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Exception/ActualValueIsNotAnObjectException.php',
         'PHPUnit\\Framework\\Assert' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Assert.php',
