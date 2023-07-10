@@ -72,7 +72,7 @@ class PrediksiController extends Controller
         for ($index = 0; $index < $maxX; $index++) {
             $x = $index + 1;
             $y = $c[0] + $c[1] * $x;
-            $yFormatted = number_format($y, 0);
+            $yFormatted = number_format($y, 1);
             $regressionLine[] = [
                 'hari' => date('Y-m-d', strtotime($perubahanBerats[0]->created_at . ' + ' . $index . ' days')),
                 'berat' => $yFormatted
@@ -81,7 +81,7 @@ class PrediksiController extends Controller
 
         // Menghitung prediksi berat sekarang
         $prediksiBeratSekarang = $c[0] + $c[1] * ($perubahanBerats->count() + 1);
-        $prediksiBeratSekarangFormatted = number_format($prediksiBeratSekarang, 0);
+        $prediksiBeratSekarangFormatted = number_format($prediksiBeratSekarang, 1);
 
         // Menambahkan tanggal prediksi berat sekarang
         $tanggalPrediksi = date('Y-m-d', strtotime($perubahanBerats[1]->created_at . ' + ' . $perubahanBerats->count() . ' days'));
@@ -100,7 +100,10 @@ class PrediksiController extends Controller
                 'tanggal' => $tanggalPrediksi,
                 'berat' => $prediksiBeratSekarangFormatted
             ],
-            'hari_target' => $hariKeXRounded,
+            'hari_target' => [
+                'tanggal' => date('Y-m-d', strtotime($perubahanBerats[0]->created_at . ' + ' . $hariKeXRounded . ' days')),
+                'hari' => $hariKeXRounded
+            ],
             'regression_line' => $regressionLine,
         ];
 
