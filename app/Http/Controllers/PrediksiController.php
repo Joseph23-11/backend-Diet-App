@@ -92,7 +92,7 @@ class PrediksiController extends Controller
         $previousWeight = $perubahanBerats[$perubahanBerats->count() - 2]->berat_sekarang;
 
         if ($currentWeight > $previousWeight) {
-            $hariKeXRounded = ceil($hariKeX) + 1;
+            $hariKeXRounded = ceil($hariKeX);
         }
 
         $response = [
@@ -101,7 +101,7 @@ class PrediksiController extends Controller
                 'berat' => $prediksiBeratSekarangFormatted
             ],
             'hari_target' => [
-                'tanggal' => date('Y-m-d', strtotime($perubahanBerats[0]->created_at . ' + ' . $hariKeXRounded . ' days')),
+                'tanggal' => date('Y-m-d', strtotime($perubahanBerats[0]->created_at . ' + ' . ($hariKeXRounded - 1) . ' days')),
                 'hari' => $hariKeXRounded
             ],
             'regression_line' => $regressionLine,
