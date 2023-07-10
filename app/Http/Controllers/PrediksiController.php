@@ -67,27 +67,44 @@ class PrediksiController extends Controller
         // Membuat array titik-titik garis regresi linear
         $regressionLine = [];
         $minX = 1;
-        $maxX = $perubahanBerats->count();
+        $maxX = $hariKeXRounded;
 
-        foreach ($perubahanBerats as $index => $perubahanBerat) {
+        for ($index = 0; $index < $maxX; $index++) {
             $x = $index + 1;
             $y = $c[0] + $c[1] * $x;
-            $yFormatted = number_format($y, 2);
+            $yFormatted = number_format($y, 0);
             $regressionLine[] = [
-                'hari' => $perubahanBerat->created_at->format('Y-m-d'),
+                'hari' => date('Y-m-d', strtotime($perubahanBerats[0]->created_at . ' + ' . $index . ' days')),
                 'berat' => $yFormatted
             ];
         }
 
         // Menghitung prediksi berat sekarang
         $prediksiBeratSekarang = $c[0] + $c[1] * ($perubahanBerats->count() + 1);
-        $prediksiBeratSekarangFormatted = number_format($prediksiBeratSekarang, 2);
+        $prediksiBeratSekarangFormatted = number_format($prediksiBeratSekarang, 0);
 
-        return response()->json([
-            'prediksi_berat_sekarang' => $prediksiBeratSekarangFormatted,
+        // Menambahkan tanggal prediksi berat sekarang
+        $tanggalPrediksi = date('Y-m-d', strtotime($perubahanBerats[1]->created_at . ' + ' . $perubahanBerats->count() . ' days'));
+
+        // Cek apakah perubahan berat badan naik
+        $lastWeightChange = $perubahanBerats->last();
+        $currentWeight = $lastWeightChange->berat_sekarang;
+        $previousWeight = $perubahanBerats[$perubahanBerats->count() - 2]->berat_sekarang;
+
+        if ($currentWeight > $previousWeight) {
+            $hariKeXRounded = ceil($hariKeX) + 1;
+        }
+
+        $response = [
+            'prediksi_berat_sekarang' => [
+                'tanggal' => $tanggalPrediksi,
+                'berat' => $prediksiBeratSekarangFormatted
+            ],
             'hari_target' => $hariKeXRounded,
             'regression_line' => $regressionLine,
-        ]);
+        ];
+
+        return response()->json($response);
     }
 
     // Fungsi untuk mengalikan matriks dengan vektor
