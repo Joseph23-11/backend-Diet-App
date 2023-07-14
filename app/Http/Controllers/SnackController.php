@@ -29,7 +29,7 @@ class SnackController extends Controller
         foreach ($snacks as $snack) {
             // Mendapatkan data makanan berdasarkan food_id
             $food = Food::findOrFail($snack->food_id);
-            
+
             // Menambahkan nama makanan ke objek snack
             $snack->nama_makanan = $food->nama_makanan;
         }
@@ -110,7 +110,55 @@ class SnackController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'porsi_makanan' => 'required|numeric',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation errors',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        // Mencari data Snack berdasarkan ID
+        $snack = Snack::find($id);
+
+        // Jika data tidak ditemukan, kirimkan respons error
+        if (!$snack) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Snack data not found',
+            ], 404);
+        }
+
+        // Mendapatkan data makanan berdasarkan food_id
+        $food = Food::findOrFail($snack->food_id);
+
+        // Menghitung nilai kalori, protein, lemak, dan karbohidrat berdasarkan porsi makanan
+        $porsi_makanan = $request->input('porsi_makanan');
+        $kalori = $food->kalori * $porsi_makanan;
+        $protein = $food->protein * $porsi_makanan;
+        $lemak = $food->lemak * $porsi_makanan;
+        $karbohidrat = $food->karbohidrat * $porsi_makanan;
+
+        // Mengupdate data snack
+        $snack->porsi_makanan = $porsi_makanan;
+        $snack->kalori = $kalori;
+        $snack->protein = $protein;
+        $snack->lemak = $lemak;
+        $snack->karbohidrat = $karbohidrat;
+        $snack->save();
+
+        // Mendapatkan nama makanan terkait
+        $snack->nama_makanan = $food->nama_makanan;
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Snack data updated successfully',
+            'data' => $snack,
+        ], 200);
     }
 
     /**

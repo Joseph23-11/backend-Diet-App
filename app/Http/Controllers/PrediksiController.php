@@ -83,8 +83,6 @@ class PrediksiController extends Controller
         $prediksiBeratSekarang = $c[0] + $c[1] * ($perubahanBerats->count() + 1);
         $prediksiBeratSekarangFormatted = number_format($prediksiBeratSekarang, 1);
 
-        // Menambahkan tanggal prediksi berat sekarang
-        $tanggalPrediksi = date('Y-m-d', strtotime($perubahanBerats[1]->created_at . ' + ' . $perubahanBerats->count() . ' days'));
 
         // Cek apakah perubahan berat badan naik
         $lastWeightChange = $perubahanBerats->last();
@@ -94,6 +92,9 @@ class PrediksiController extends Controller
         if ($currentWeight > $previousWeight) {
             $hariKeXRounded = ceil($hariKeX);
         }
+
+        // Menambahkan tanggal prediksi berat sekarang (menggunakan tanggal besok)
+        $tanggalPrediksi = date('Y-m-d', strtotime('+1 day'));
 
         $response = [
             'prediksi_berat_sekarang' => [
