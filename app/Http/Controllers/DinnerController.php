@@ -24,7 +24,7 @@ class DinnerController extends Controller
         foreach ($dinners as $dinner) {
             // Mendapatkan data makanan berdasarkan food_id
             $food = Food::findOrFail($dinner->food_id);
-            
+
             // Menambahkan nama makanan ke objek dinner
             $dinner->nama_makanan = $food->nama_makanan;
         }
@@ -83,6 +83,58 @@ class DinnerController extends Controller
             'message' => 'Dinner data created successfully',
             'data' => $dinner,
         ], 201);
+    }
+    public function update(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'porsi_makanan' => 'required|numeric',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation errors',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        // Mencari data Dinner berdasarkan ID
+        $dinner = Dinner::find($id);
+
+        // Jika data tidak ditemukan, kirimkan respons error
+        if (!$dinner) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Dinner data not found',
+            ], 404);
+        }
+
+        // Mendapatkan data makanan berdasarkan food_id
+        $food = Food::findOrFail($dinner->food_id);
+
+        // Menghitung nilai kalori, protein, lemak, dan karbohidrat berdasarkan porsi makanan
+        $porsi_makanan = $request->input('porsi_makanan');
+        $kalori = $food->kalori * $porsi_makanan;
+        $protein = $food->protein * $porsi_makanan;
+        $lemak = $food->lemak * $porsi_makanan;
+        $karbohidrat = $food->karbohidrat * $porsi_makanan;
+
+        // Mengupdate data dinner
+        $dinner->porsi_makanan = $porsi_makanan;
+        $dinner->kalori = $kalori;
+        $dinner->protein = $protein;
+        $dinner->lemak = $lemak;
+        $dinner->karbohidrat = $karbohidrat;
+        $dinner->save();
+
+        // Mendapatkan nama makanan terkait
+        $dinner->nama_makanan = $food->nama_makanan;
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Dinner data updated successfully',
+            'data' => $dinner,
+        ], 200);
     }
 
     public function destroy($id)

@@ -24,7 +24,7 @@ class LunchController extends Controller
         foreach ($lunches as $lunch) {
             // Mendapatkan data makanan berdasarkan food_id
             $food = Food::findOrFail($lunch->food_id);
-            
+
             // Menambahkan nama makanan ke objek lunch
             $lunch->nama_makanan = $food->nama_makanan;
         }
@@ -83,6 +83,58 @@ class LunchController extends Controller
             'message' => 'Lunch data created successfully',
             'data' => $lunch,
         ], 201);
+    }
+    public function update(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'porsi_makanan' => 'required|numeric',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation errors',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        // Mencari data Lunch berdasarkan ID
+        $lunch = Lunch::find($id);
+
+        // Jika data tidak ditemukan, kirimkan respons error
+        if (!$lunch) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Lunch data not found',
+            ], 404);
+        }
+
+        // Mendapatkan data makanan berdasarkan food_id
+        $food = Food::findOrFail($lunch->food_id);
+
+        // Menghitung nilai kalori, protein, lemak, dan karbohidrat berdasarkan porsi makanan
+        $porsi_makanan = $request->input('porsi_makanan');
+        $kalori = $food->kalori * $porsi_makanan;
+        $protein = $food->protein * $porsi_makanan;
+        $lemak = $food->lemak * $porsi_makanan;
+        $karbohidrat = $food->karbohidrat * $porsi_makanan;
+
+        // Mengupdate data lunch
+        $lunch->porsi_makanan = $porsi_makanan;
+        $lunch->kalori = $kalori;
+        $lunch->protein = $protein;
+        $lunch->lemak = $lemak;
+        $lunch->karbohidrat = $karbohidrat;
+        $lunch->save();
+
+        // Mendapatkan nama makanan terkait
+        $lunch->nama_makanan = $food->nama_makanan;
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Lunch data updated successfully',
+            'data' => $lunch,
+        ], 200);
     }
 
     public function destroy($id)
